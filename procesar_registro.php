@@ -1,6 +1,7 @@
 <?php
-error_reporting(0);
-ini_set('display_errors', 0);
+// Habilitar reporte explícito de errores
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -10,44 +11,46 @@ $password   = "AVNS_TWgaUXeKTGXNbV04Eb4";
 $dbname     = "defaultdb";
 $port       = 24366;
 
-// Inicializar MySQLi para configurar SSL de Aiven
-$conn = mysqli_init();
-$conn->ssl_set(NULL, NULL, NULL, NULL, NULL);
-$conn->options(MYSQLI_OPT_SSL_VERIFY_SERVER_CERT, false);
+try {
+    // Conexión PDO con SSL desactivando verificación estricta para Aiven
+    $dsn = "mysql:host=$servername;port=$port;dbname=$dbname;charset=utf8mb4";
+    $options = [
+        PDO::MYSQL_ATTR_SSL_CA => true,
+        PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+    ];
 
-if (!$conn->real_connect($servername, $username, $password, $dbname, $port, NULL, MYSQLI_CLIENT_SSL)) {
-    echo json_encode(["status" => "error", "message" => "Error de conexión SSL con la base de datos"]);
-    exit();
-}
+    $pdo = new PDO($dsn, $username, $password, $options);
 
-$tablaSQL = "CREATE TABLE IF NOT EXISTS registros (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    telefono VARCHAR(20) NOT NULL,
-    plan VARCHAR(50) NOT NULL,
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)";
-$conn->query($tablaSQL);
+    // Crear la tabla si no existe
+    $tablaSQL = "CREATE TABLE IF NOT EXISTS registros (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nombre VARCHAR(100) NOT NULL,
+        email VARCHAR(100) NOT NULL,
+        telefono VARCHAR(20) NOT NULL,
+        plan VARCHAR(50) NOT NULL,
+        fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )";
+    $pdo->exec($tablaSQL);
 
-$nombre   = $_POST['nombre'] ?? '';
-$email    = $_POST['email'] ?? '';
-$telefono = $_POST['telefono'] ?? '';
-$plan     = $_POST['plan'] ?? '';
+    $nombre   = $_POST['nombre'] ?? '';
+    $email    = $_POST['email'] ?? '';
+    $telefono = $_POST['telefono'] ?? '';
+    $plan     = $_POST['plan'] ?? '';
 
-if (!empty($nombre) && !empty($email)) {
-    $stmt = $conn->prepare("INSERT INTO registros (nombre, email, telefono, plan) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $nombre, $email, $telefono, $plan);
-
-    if ($stmt->execute()) {
-        echo json_encode(["status" => "success", "message" => "¡Registro completado con éxito!"]);
+    if (!empty($nombre) && !empty($email)) {
+        $stmt = $pdo->prepare("INSERT INTO registros (nombre, email, telefono, plan) VALUES (?, ?, ?, ?)");
+        if ($stmt->execute([$nombre, $email, $telefono, $plan])) {
+            echo json_encode(["status" => "success", "message" => "¡Registro completado con éxito!"]);
+        } else {
+            echo json_encode(["status" => "error", "message" => "Error al guardar en la base de datos"]);
+        }
     } else {
-        echo json_encode(["status" => "error", "message" => "Error al guardar en la base de datos"]);
+        echo json_encode(["status" => "error", "message" => "Por favor llena los campos requeridos"]);
     }
-    $stmt->close();
-} else {
-    echo json_encode(["status" => "error", "message" => "Por favor llena los campos requeridos"]);
-}
 
-$conn->close();
+} catch (PDOException $e) {
+    echo json_encode(["status" => "error", "message" => "Error BD: " . $e->getMessage()]);
+}
 ?>
