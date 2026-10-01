@@ -10,10 +10,13 @@ $password   = "AVNS_TWgaUXeKTGXNbV04Eb4";
 $dbname     = "defaultdb";
 $port       = 24366;
 
-$conn = new mysqli($servername, $username, $password, $dbname, $port);
+// Inicializar MySQLi para configurar SSL de Aiven
+$conn = mysqli_init();
+$conn->ssl_set(NULL, NULL, NULL, NULL, NULL);
+$conn->options(MYSQLI_OPT_SSL_VERIFY_SERVER_CERT, false);
 
-if ($conn->connect_error) {
-    echo json_encode(["status" => "error", "message" => "Error de conexión con la base de datos"]);
+if (!$conn->real_connect($servername, $username, $password, $dbname, $port, NULL, MYSQLI_CLIENT_SSL)) {
+    echo json_encode(["status" => "error", "message" => "Error de conexión SSL con la base de datos"]);
     exit();
 }
 
