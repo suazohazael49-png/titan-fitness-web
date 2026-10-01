@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TITAN FITNESS</title>
+<meta name="description" content="Gimnasio moderno. Entrena, cambia y vuelve más fuerte.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Big+Shoulders+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="nav">
+  <a class="logo" href="#inicio" aria-label="TITAN FITNESS">
+    <svg viewBox="0 0 32 32" width="38" height="38" aria-hidden="true"><path d="M2 4h28v7H19v17h-6V11H2z" fill="#E53E3E"/><path d="M2 4h14v7H2z" fill="#F6AD55"/></svg>
+    <span><b>TITAN</b><i>FITNESS</i></span>
+  </a>
+</header>
+
+<section class="hero" id="inicio">
+  <div class="bigT" aria-hidden="true">T</div>
+  <img src="assets/img/hero-portada.jpg" alt="">
+  <div class="hero-in">
+    <h1 data-i="h1"></h1>
+    <p data-i="h1p"></p>
+    <a class="btn" href="#registration-modal" data-i="cta" data-open-registration data-plan="pro"></a>
+  </div>
+  <a class="mouse" href="#recorrido"><i></i><span data-i="hint"></span></a>
+</section>
+
+<section class="tour" id="recorrido">
+  <div class="stage">
+    <div class="layers" id="layers"></div>
+    <div class="fx grain"></div><div class="fx vig"></div>
+    <ol class="rooms" id="rooms"></ol>
+    <div class="cap"><h2 id="capT"></h2><p id="capP"></p></div>
+    <div class="mouse hint"><i></i><span data-i="hint"></span></div>
+  </div>
+</section>
+
+<section class="gal" id="instalaciones">
+  <h2 data-i="gt"></h2>
+  <div class="car" id="car" tabindex="0" aria-roledescription="carrusel">
+    <div class="track" id="track"></div>
+    <button class="arr prev" type="button" aria-label="Anterior"><span aria-hidden="true">&lsaquo;</span></button>
+    <button class="arr next" type="button" aria-label="Siguiente"><span aria-hidden="true">&rsaquo;</span></button>
+  </div>
+  <div class="dots" id="dots"></div>
+</section>
+
+<section class="plans" id="planes">
+  <h2 data-i="pt"></h2>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section class="info">
+  <article id="lugar"><h2 data-i="lt"></h2><p data-i="la"></p><p data-i="lh"></p>
+    <a class="btn" href="https://www.google.com/maps/search/?api=1&query=gimnasio" target="_blank" rel="noopener" data-i="lmap"></a></article>
+  <article id="contacto"><h2 data-i="ct"></h2>
+    <a class="ct" href="https://wa.me/00000000000">WhatsApp +00 0000 0000</a>
+    <a class="ct" href="tel:+00000000000">+00 0000 0000</a>
+    <a class="ct" href="mailto:hola@titanfitness.com">hola@titanfitness.com</a>
+    <a class="ct" href="#inicio">@titanfitness</a></article>
+</section>
+
+<footer class="final-cta">
+  <div class="final-cta-content">
+    <p class="big" data-i="ft"></p>
+    <a class="btn" href="#registration-modal" data-i="cta" data-open-registration data-plan="pro"></a>
+  </div>
+  <small>© 2026 TITAN FITNESS</small>
+</footer>
+<nav class="dock" aria-label="Menú">
+  <a href="#recorrido" data-i="n1"></a><a href="#instalaciones" data-i="n2"></a><a href="#planes" data-i="n3"></a><a href="#lugar" data-i="n4"></a><a href="#contacto" data-i="n5"></a>
+  <div class="lang" role="group" aria-label="Idioma"><button data-l="es">ES</button><span>|</span><button data-l="en">EN</button></div>
+</nav>
+<div class="checkout-overlay" id="registration-modal" hidden>
+  <section class="checkout-dialog" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+    <button class="checkout-close" type="button" data-close-registration data-checkout-aria="closeLabel" aria-label="Cerrar">&times;</button>
+    <p class="checkout-toast" id="checkout-toast" role="status" aria-live="polite" hidden></p>
+    <div class="checkout-copy">
+      <p class="checkout-eyebrow" data-checkout="eyebrow"></p>
+      <h2 id="checkout-title" data-checkout="title"></h2>
+      <p class="checkout-summary"><span data-checkout="selected"></span><strong id="plan-summary"></strong></p>
+    </div>
+    <form class="checkout-form" id="registration-form">
+      <label for="registration-name" data-checkout="nameLabel"></label>
+      <input id="registration-name" name="nombre" type="text" autocomplete="name" required>
+      <label for="registration-email" data-checkout="emailLabel"></label>
+      <input id="registration-email" name="email" type="email" autocomplete="email" required>
+      <label for="registration-phone" data-checkout="phoneLabel"></label>
+      <input id="registration-phone" name="telefono" type="tel" autocomplete="tel" required>
+      <label for="registration-plan" data-checkout="planLabel"></label>
+      <select id="registration-plan" name="plan" required>
+        <option value="basic"></option>
+        <option value="pro" selected></option>
+        <option value="vip"></option>
+        <option value="duo"></option>
+      </select>
+      <p class="checkout-status" id="checkout-status" role="alert" hidden></p>
+      <button class="checkout-submit" type="submit" data-checkout="submit"></button>
+    </form>
+  </section>
+</div>
+<script src="js/main.js"></script>
+</body>
+</html>
