@@ -1,5 +1,4 @@
 <?php
-// Habilitar reporte explícito de errores
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -7,12 +6,11 @@ header('Content-Type: application/json; charset=utf-8');
 
 $servername = "mysql-2644faa1-suazohazael49-6fc8.l.aivencloud.com";
 $username   = "avnadmin";
-$password   = "AVNS_TWgaUXeKTGXNbV04Eb4";
+$password   = "AVNS_IWgaUXeKTGXNbv04Eb4";
 $dbname     = "defaultdb";
 $port       = 24366;
 
 try {
-    // Conexión PDO con SSL desactivando verificación estricta para Aiven
     $dsn = "mysql:host=$servername;port=$port;dbname=$dbname;charset=utf8mb4";
     $options = [
         PDO::MYSQL_ATTR_SSL_CA => true,
@@ -23,7 +21,6 @@ try {
 
     $pdo = new PDO($dsn, $username, $password, $options);
 
-    // Crear la tabla si no existe
     $tablaSQL = "CREATE TABLE IF NOT EXISTS registros (
         id INT AUTO_INCREMENT PRIMARY KEY,
         nombre VARCHAR(100) NOT NULL,
